@@ -1,0 +1,14 @@
+<h2>The Report Creation Component</h2>
+<!--outputting content in textareas: with [] around the html element's properties we can directly access the html OBJECTS properties-->
+<!--attention: if we put a string in there we need to write "'string'", otherwise it looks for a component's property eg. "newReport" would work-->
+<!-- create local reference/ make the html element a variable using a #-->
+<textarea rows="6" [value]="newReport" #reportInput></textarea>
+<hr>
+<!--with angular we can write the logic in a descriptive way, telling it what to do on a click event-->
+<!--typically, one just declares the method which is used in that case-->
+<button (click)="onAddReport(reportInput)">Save Report</button>
+
+<!--outputting content-->
+<!-- with string interpolation {{ }} we can refer to properties or other objects in our component-->
+<!-- prints out the CURRENT value of newReport - if it changes, it updates it-->
+<p>{{ newReport }}</p>

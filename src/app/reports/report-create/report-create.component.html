@@ -1,0 +1,44 @@
+<!--Two way binding-->
+<!-- here we use ngModel which is a directive = an instruction you place on an html element-->
+<!-- ngModel listens to the user input and emit the data to us and store that data in the text area-->
+<!-- ngModel is not included in core angular package so we need to import it-->
+<!-- we need to bind it to a property-->
+<mat-card>
+  <form (submit)="onAddReportTwoWay(reportForm)"  #reportForm="ngForm">
+  <mat-form-field>
+    <input matInput
+           type="text"
+           name="title"
+           ngModel
+           required
+     placeholder="Title">
+  </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             type="text"
+             name="rating"
+             ngModel
+             required
+             placeholder="Rating">
+    </mat-form-field>
+  <mat-form-field>
+    <textarea matInput
+              rows="4"
+              name="comment"
+              ngModel
+              required
+              placeholder="Comment"
+              #comment="ngModel">
+    </textarea>
+    <mat-error *ngIf="comment.invalid">Please enter a report comment.</mat-error>
+  </mat-form-field>
+    <mat-action-row>
+      <button mat-raised-button
+              color="primary"
+              type="submit">Save Report</button>
+      <button mat-button
+              color="primary" type="reset">Clear value</button>
+    </mat-action-row>
+
+  </form>
+</mat-card>

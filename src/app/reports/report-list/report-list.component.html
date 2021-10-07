@@ -1,0 +1,15 @@
+<!-- set multi true so that several expansions can be open at the same time-->
+<mat-accordion multi="true" *ngIf="reports.length>0">
+  <!-- *ngFor is a directive used to repete an element as often as required-->
+  <mat-expansion-panel *ngFor="let report of reports">
+    <mat-expansion-panel-header>
+      {{ report.title }}
+    </mat-expansion-panel-header>
+    <p>{{ report.comment }}</p>
+    <mat-action-row>
+      <button color="accent" mat-button>EDIT</button>
+      <button color="warn" mat-button>DELETE</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
+<p class="info-text mat-body-1" *ngIf="reports.length<=0"> No reports added yet! </p>
