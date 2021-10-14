@@ -25,8 +25,8 @@ export class ReportListComponent implements OnInit, OnDestroy{
   // a function that angular executes as initation every time the Component is created
   ngOnInit() {
     // init tasks
-    // fetch all posts
-    this.reports = this.reportService.getReports();
+    // fetch all reports
+    this.reportService.getReports();
     // we receive the reportsUpdated array basically (i think this class is the observer)
     // first arg: function that is executed when something changed/ new data is emitted
     // second arg: function whenever an error occurs
