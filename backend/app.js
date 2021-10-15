@@ -1,8 +1,26 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+// work with Report schema
+const Report = require('./models/report');
+const conf = require('../configuration.json');
 
 // the function returns us an express app
 const app = express();
+
+// create uri to database from configuration file
+const mongoUri = "mongodb://" + conf.database.username + ":" + conf.database.password
+                              + "@" + conf.host.ip + "/" + conf.database.name
+                              + "?" + conf.database.params;
+
+// connect to database
+mongoose.connect(mongoUri).then(() => {
+  console.log("connecting to database was successfull")
+})
+  .catch((e) => {
+    console.log("connection failed due to:");
+    console.log(e.toString());
+  });
 
 // helps us with parsing incoming data
 app.use(bodyParser.json());
@@ -54,7 +72,11 @@ app.use("/api/reports", (req, res, next) => {
 
 // handle incoming post requests
 app.post("/api/reports", (req, res, next) => {
-  const report = req.body;
+  const report = new Report({
+    title: req.body.title,
+    rating: req.body.rating,
+    comment: req.body.comment
+  });
   console.log(report);
   // everything was okay, a resource was created
   res.status(201).json({
