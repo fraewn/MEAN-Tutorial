@@ -18,8 +18,6 @@
 </head>
 <app-header></app-header>
 <main>
-  <!--on the event that a report is created we call the onReportAdded method and hand over the event data which we access with $-->
-<app-report-create (reportCreated)="onReportAdded($event)"></app-report-create>
-  <app-report-list [reports]="storedReports"></app-report-list>
+  <router-outlet></router-outlet>
 </main>
 </html>

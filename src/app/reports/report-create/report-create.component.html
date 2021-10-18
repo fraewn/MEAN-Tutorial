@@ -4,12 +4,12 @@
 <!-- ngModel is not included in core angular package so we need to import it-->
 <!-- we need to bind it to a property-->
 <mat-card>
-  <form (submit)="onAddReportTwoWay(reportForm)"  #reportForm="ngForm">
+  <form (submit)="onSaveReport(reportForm)" #reportForm="ngForm">
   <mat-form-field>
     <input matInput
            type="text"
            name="title"
-           ngModel
+           [ngModel]="report.title"
            required
      placeholder="Title">
   </mat-form-field>
@@ -17,7 +17,7 @@
       <input matInput
              type="text"
              name="rating"
-             ngModel
+             [ngModel]="report.rating"
              required
              placeholder="Rating">
     </mat-form-field>
@@ -25,7 +25,7 @@
     <textarea matInput
               rows="4"
               name="comment"
-              ngModel
+              [ngModel]="report.comment"
               required
               placeholder="Comment"
               #comment="ngModel">

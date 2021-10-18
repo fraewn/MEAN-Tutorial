@@ -34,7 +34,6 @@ import {ReportService} from "./reports/report.service";
   imports: [
     // BrowserModule contains some core features of angular
     BrowserModule,
-    // this is the one I imported when I said yes to angular routing I guess
     AppRoutingModule,
     // this one we need to use ngModule
     FormsModule,

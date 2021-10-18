@@ -8,8 +8,8 @@
     <p>{{ report.rating }}</p>
     <p>{{ report.comment }}</p>
     <mat-action-row>
-      <button color="accent" mat-button>EDIT</button>
-      <button color="warn" mat-button>DELETE</button>
+      <a mat-button color="accent" [routerLink]="['/edit', report.id]">EDIT</a>
+      <button color="warn" mat-button (click)="onDelete(report.id)">DELETE</button>
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>

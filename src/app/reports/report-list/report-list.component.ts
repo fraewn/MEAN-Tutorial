@@ -46,4 +46,8 @@ export class ReportListComponent implements OnInit, OnDestroy{
     this.reportsSubscribed.unsubscribe();
   }
 
+  onDelete(reportId: string){
+    this.reportService.deleteReport(reportId);
+  }
+
 }
