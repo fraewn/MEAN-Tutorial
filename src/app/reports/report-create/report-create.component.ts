@@ -18,6 +18,7 @@ export class ReportCreateComponent implements OnInit {
   private mode = 'create';
   private reportId: string;
   report: Report;
+  isLoading = false;
 
   constructor(public reportService: ReportService, public route: ActivatedRoute) {}
 
@@ -45,7 +46,12 @@ export class ReportCreateComponent implements OnInit {
       if (paramMap.has('reportId')) {
         this.mode = 'edit';
         this.reportId = paramMap.get('reportId');
-        this.report = this.reportService.getReport(this.reportId);
+        this.isLoading = true;
+        this.report = this.reportService.getReport(this.reportId).subscribe(reportData => {
+          this.isLoading = false;
+          this.report = {id: reportData._id, title: reportData.title, companyName: reportData.companyName,
+          reporterId: reportData.reportId, rating: reportData.rating, comment: reportData.comment, date: reportData.date};
+        });
       } else {
         this.mode = 'create';
         this.reportId = null;

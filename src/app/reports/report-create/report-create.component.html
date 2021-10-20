@@ -9,7 +9,7 @@
     <input matInput
            type="text"
            name="title"
-           [ngModel]="report.title"
+           [ngModel]="report?.title"
            required
      placeholder="Title">
   </mat-form-field>
@@ -17,7 +17,7 @@
       <input matInput
              type="text"
              name="rating"
-             [ngModel]="report.rating"
+             [ngModel]="report?.rating"
              required
              placeholder="Rating">
     </mat-form-field>
@@ -25,7 +25,7 @@
     <textarea matInput
               rows="4"
               name="comment"
-              [ngModel]="report.comment"
+              [ngModel]="report?.comment"
               required
               placeholder="Comment"
               #comment="ngModel">

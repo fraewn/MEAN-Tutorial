@@ -17,6 +17,7 @@ import {HeaderComponent} from "./header/header.component";
 import {BasicReportCreateComponent} from "./tutorial/basic-report-create.component";
 import {ReportListComponent} from "./reports/report-list/report-list.component";
 import {ReportService} from "./reports/report.service";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 
 
@@ -43,7 +44,8 @@ import {ReportService} from "./reports/report.service";
     MatButtonModule,
     MatToolbarModule,
     MatExpansionModule,
-    HttpClientModule
+    HttpClientModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   // here we add the app component to the bootstrap array too so we can use it in index.html

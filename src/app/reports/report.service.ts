@@ -4,6 +4,7 @@ import {Subject} from 'rxjs';
 import {HttpClient} from "@angular/common/http";
 // allows us to manipualte elements in arrays
 import {map} from 'rxjs/operators';
+import {Router} from "@angular/router";
 
 // using injectable decorator, angular creates only one instance of the report service to be used
 // this way we guarantee that we only have one instance of the reports array, therefore being consistent
@@ -13,8 +14,7 @@ export class ReportService {
   private reports: Report[] = [];
   private reportsUpdated = new Subject<Report[]>()
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient, private router: Router) {}
   // get all Reports
   getReports(){
     // get reports from backend
@@ -55,6 +55,7 @@ export class ReportService {
       console.log(report);
       this.reports.push(report);
       this.reportsUpdated.next([...this.reports]);
+      this.router.navigate(["/"]);
     });
   }
 
@@ -82,7 +83,12 @@ export class ReportService {
                                 companyName: companyName, date: date, reporterId: reporterId};
     this.http.put("http://localhost:3000/api/reports/" + id, report)
       .subscribe(response => {
-        console.log(response);
+        const updatedReports = [...this.reports];
+        const oldPostIndex = updatedReports.findIndex(p => p.id === report.id);
+        updatedReports[oldPostIndex] = report;
+        this.reports = updatedReports;
+        this.reportsUpdated.next([...this.reports]);
+        this.router.navigate(["/"]);
       });
   }
 }
