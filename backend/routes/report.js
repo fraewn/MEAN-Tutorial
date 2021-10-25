@@ -23,15 +23,45 @@ router.post("", (req, res, next) => {
 })
 
 router.get("", (req, res, next) => {
-  Report.find().then(documents => {
+  // if you extract the query parameters from req they are always in string format
+  // therefore we need to cast by writing a + in front of them
+  const pageSize = +req.query.pagesize;
+  const currentPage = +req.query.page;
+  const reportQuery = Report.find();
+  let fetchedReports;
+  // only execute block if pageSize and currentPage parameters are set at all in query
+  // example query for get request: http://localhost/3000/api/reports?pagesize=2&page=1
+  if(pageSize && currentPage){
+    // if you are on page 2 (currentPage) and you can see 10 elements per page (pagesize)
+    // you want to skip the first 10 elements in the database (so you want to display element 11-20)
+    // therefore you need to skip the first 10 * (2-1) = 10 elements
+    reportQuery
+      .skip(pageSize * (currentPage - 1))
+      .limit(pageSize);
+  }
+  reportQuery.then(documents => {
+    fetchedReports = documents;
     // we need to execute the response code here, because the find() is an asynchronous call
     // only then we can rely on the documents being fetched already
+    return Report.count();
+  }).then(count => {
     res.status(200).json({
-      message: "reports fetched successfully",
-      reports: documents
-    })
+      message: "Reports fetched successfully!",
+      reports: fetchedReports,
+      maxReports: count
+    });
   }).catch(err => {
     console.log(err);
+  });
+});
+
+router.get("/:id", (req, res, next) => {
+  Report.findById(req.params.id).then(report => {
+    if (report) {
+      res.status(200).json(report);
+    } else {
+      res.status(404).json({ message: "Post not found!" });
+    }
   });
 });
 

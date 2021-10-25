@@ -10,3 +10,7 @@ textarea {
 mat-raised-button {
   display: block;
 }
+
+mat-spinner {
+  margin: auto;
+}

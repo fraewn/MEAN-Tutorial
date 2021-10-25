@@ -4,14 +4,18 @@
 <!-- ngModel is not included in core angular package so we need to import it-->
 <!-- we need to bind it to a property-->
 <mat-card>
-  <form (submit)="onSaveReport(reportForm)" #reportForm="ngForm">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form (submit)="onSaveReport(reportForm)" #reportForm="ngForm" *ngIf="!isLoading">
   <mat-form-field>
-    <input matInput
+    <input
+           matInput
            type="text"
            name="title"
            [ngModel]="report?.title"
            required
-     placeholder="Title">
+           placeholder="Title"
+           #title="ngModel">
+    <mat-error *ngIf="title.invalid">Please enter a post title.</mat-error>
   </mat-form-field>
     <mat-form-field>
       <input matInput
@@ -19,7 +23,9 @@
              name="rating"
              [ngModel]="report?.rating"
              required
-             placeholder="Rating">
+             placeholder="Rating"
+             #rating="ngModel">
+      <mat-error *ngIf="rating.invalid">Please enter a post title.</mat-error>
     </mat-form-field>
   <mat-form-field>
     <textarea matInput

@@ -1,5 +1,6 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
 <!-- set multi true so that several expansions can be open at the same time-->
-<mat-accordion multi="true" *ngIf="reports.length>0">
+<mat-accordion multi="true" *ngIf="reports.length>0 && !isLoading">
   <!-- *ngFor is a directive used to repete an element as often as required-->
   <mat-expansion-panel *ngFor="let report of reports">
     <mat-expansion-panel-header>
@@ -13,4 +14,11 @@
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
-<p class="info-text mat-body-1" *ngIf="reports.length<=0"> No reports added yet! </p>
+<mat-paginator
+  [length]="totalReports"
+  [pageSize]="reportsPerPage"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="onChangedPage($event)"
+  *ngIf="reports.length>0" >
+</mat-paginator>
+<p class="info-text mat-body-1" *ngIf="reports.length<=0 && !isLoading"> No reports added yet! </p>

@@ -5,6 +5,7 @@ import {HttpClient} from "@angular/common/http";
 // allows us to manipualte elements in arrays
 import {map} from 'rxjs/operators';
 import {Router} from "@angular/router";
+import {createUrlResolverWithoutPackagePrefix} from "@angular/compiler";
 
 // using injectable decorator, angular creates only one instance of the report service to be used
 // this way we guarantee that we only have one instance of the reports array, therefore being consistent
@@ -12,34 +13,43 @@ import {Router} from "@angular/router";
 @Injectable({providedIn: 'root'})
 export class ReportService {
   private reports: Report[] = [];
-  private reportsUpdated = new Subject<Report[]>()
+  private reportsUpdated = new Subject<{reports: Report[], reportCount: number}>()
 
   constructor(private http: HttpClient, private router: Router) {}
   // get all Reports
-  getReports(){
+  getReports(reportsPerPage: number, currentPage: number){
+    const queryParams = `?pagesize=${reportsPerPage}&page=${currentPage}`;
     // get reports from backend
-    this.http.get<{message: string, reports : any}>(
-      "http://localhost:3000/api/reports")
+    this.http.get<{message: string, reports : any, maxReports: number}>(
+      "http://localhost:3000/api/reports" + queryParams)
       // allows us to manipulate observed data
-      .pipe(map((reportData) => {
-        return reportData.reports.map(incomingReport => {
-          return {
-            title: incomingReport.title,
-            companyName: incomingReport.companyName,
-            rating: incomingReport.rating,
-            comment: incomingReport.comment,
-            date: incomingReport.date,
-            reporterId: incomingReport.reporterId,
-            id: incomingReport._id
-          };
-        });
-      }))
-      .subscribe((transformedReports)=> {
-      this.reports = transformedReports;
+      .pipe(
+        map(reportData => {
+        return {
+          reports: reportData.reports.map(incomingReport => {
+            return {
+              title: incomingReport.title,
+              companyName: incomingReport.companyName,
+              rating: incomingReport.rating,
+              comment: incomingReport.comment,
+              date: incomingReport.date,
+              reporterId: incomingReport.reporterId,
+              id: incomingReport._id
+            };
+          }),
+          maxReports: reportData.maxReports
+        };
+      })
+      )
+      .subscribe((transformedReportData)=> {
+      this.reports = transformedReportData.reports;
       // js spread operator [...array]
       // creates a new array with [] and makes a copies another array ...array in it
       // otherwise we had only copied the address but not the object (reference type) - in this case we want a real copy
-      this.reportsUpdated.next([...this.reports]);
+      this.reportsUpdated.next({
+          reports: [...this.reports],
+          reportCount: transformedReportData.maxReports
+        });
     });
   }
 
@@ -50,17 +60,14 @@ export class ReportService {
     // post new report to backend
     this.http.post<{message:string, reportId:string}>('http://localhost:3000/api/reports', report)
       .subscribe((response)=> {
-      report.id = response.reportId;
-      // update local data (also with id set by mongodb)
-      console.log(report);
-      this.reports.push(report);
-      this.reportsUpdated.next([...this.reports]);
       this.router.navigate(["/"]);
     });
   }
 
   getReport(reportId: string){
-    return {...this.reports.find(report => report.id === reportId)}
+    return this.http.get<{ _id: string; title: string; comment: string; companyName: string, date: Date, rating: number, reporterId: string }>(
+      "http://localhost:3000/api/reports/" + reportId
+    );
   }
 
   getReportUpdateListener(){
@@ -68,14 +75,7 @@ export class ReportService {
   }
 
   deleteReport(reportId: string){
-    this.http.delete("http://localhost:3000/api/reports/" + reportId)
-      .subscribe(()=> {
-        // the function within filter() ist executed for each report
-        // so a report only is added to updatedReports if its id does not equal the just deleted report
-        const updatedReports = this.reports.filter(report => report.id != reportId );
-        this.reports = updatedReports;
-        this.reportsUpdated.next([...this.reports]);
-        });
+    return this.http.delete("http://localhost:3000/api/reports/" + reportId);
   }
 
   updateReport(id: string, title: string, comment: string, rating: number, companyName: string, reporterId: string, date: Date){
@@ -83,11 +83,6 @@ export class ReportService {
                                 companyName: companyName, date: date, reporterId: reporterId};
     this.http.put("http://localhost:3000/api/reports/" + id, report)
       .subscribe(response => {
-        const updatedReports = [...this.reports];
-        const oldPostIndex = updatedReports.findIndex(p => p.id === report.id);
-        updatedReports[oldPostIndex] = report;
-        this.reports = updatedReports;
-        this.reportsUpdated.next([...this.reports]);
         this.router.navigate(["/"]);
       });
   }
