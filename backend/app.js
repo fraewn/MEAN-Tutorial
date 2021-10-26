@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const Report = require('./models/report');
 const conf = require('../configuration.json');
 const reportRoutes = require("./routes/report");
+const userRoutes = require("./routes/user");
 // the function returns us an express app
 const app = express();
 
@@ -34,7 +35,7 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   // the incoming requests may have these headers:
   res.setHeader("Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept");
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   // allow these methods:
   res.setHeader("Access-Control-Allow-Methods",
     "GET, POST, PATCH, DELETE, PUT, OPTIONS");
@@ -43,5 +44,6 @@ app.use((req, res, next) => {
 
 // filter for all request going to /api/reports and use the reportRoutes module for that
 app.use("/api/reports", reportRoutes);
+app.use("/api/user", userRoutes);
 
 module.exports = app;

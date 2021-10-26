@@ -3,6 +3,7 @@ import {Report} from '../report.model';
 import {ReportService} from "../report.service";
 import {Subscription} from "rxjs";
 import {PageEvent} from "@angular/material/paginator";
+import {AuthService} from "../../auth/auth.service";
 
 @Component({
   selector: 'app-report-list',
@@ -11,7 +12,9 @@ import {PageEvent} from "@angular/material/paginator";
 })
 export class ReportListComponent implements OnInit, OnDestroy{
   reportService: ReportService;
-  constructor(reportService: ReportService) {
+  private authStatusSub: Subscription;
+  isAuthenticated = false;
+  constructor(reportService: ReportService, private authService : AuthService) {
     this.reportService = reportService;
   }
 
@@ -51,11 +54,16 @@ export class ReportListComponent implements OnInit, OnDestroy{
     }, (reports) => {
       console.log("no data could be retrieved from observable");
     });
+    this.isAuthenticated = this.authService.getIsAuth();
+    this.authStatusSub = this.authService.getAuthStatusListener().subscribe(isAuthenticated => {
+      this.isAuthenticated = isAuthenticated;
+    });
   }
 
   ngOnDestroy() {
     // prevent memory leaks by unsubscribing when component is not used in DOM
     this.reportsSubscribed.unsubscribe();
+    this.authStatusSub.unsubscribe();
   }
 
   onDelete(reportId: string){

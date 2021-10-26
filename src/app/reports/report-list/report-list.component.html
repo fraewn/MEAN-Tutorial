@@ -8,7 +8,7 @@
     </mat-expansion-panel-header>
     <p>{{ report.rating }}</p>
     <p>{{ report.comment }}</p>
-    <mat-action-row>
+    <mat-action-row *ngIf="isAuthenticated">
       <a mat-button color="accent" [routerLink]="['/edit', report.id]">EDIT</a>
       <button color="warn" mat-button (click)="onDelete(report.id)">DELETE</button>
     </mat-action-row>

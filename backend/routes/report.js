@@ -1,10 +1,13 @@
 const express = require('express');
 const Report = require("../models/report");
 
+// auth middleware to protect the non public routes
+const checkAuth = require("../middleware/check-auth");
+
 const router = express.Router();
 
 // handle incoming post requests
-router.post("", (req, res, next) => {
+router.post("", checkAuth, (req, res, next) => {
   const report = new Report({
     title: req.body.title,
     rating: req.body.rating,
@@ -65,13 +68,13 @@ router.get("/:id", (req, res, next) => {
   });
 });
 
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", checkAuth, (req, res, next) => {
   Report.deleteOne({_id: req.params.id}).then(result => {
     res.status(200).json({message: "Report deleted!"});
   })
 });
 
-router.put("/:id", (req, res, next) => {
+router.put("/:id", checkAuth, (req, res, next) => {
   const report = new Report( {
     _id: req.body.id,
     title: req.body.title,

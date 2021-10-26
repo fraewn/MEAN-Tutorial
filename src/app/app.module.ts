@@ -7,7 +7,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatExpansionModule} from "@angular/material/expansion";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +18,9 @@ import {BasicReportCreateComponent} from "./tutorial/basic-report-create.compone
 import {ReportListComponent} from "./reports/report-list/report-list.component";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatPaginatorModule} from "@angular/material/paginator";
+import {LoginComponent} from "./auth/login/login.component";
+import {SignupComponent} from "./auth/signup/signup.component";
+import {AuthInterceptor} from "./auth/auth-interceptor";
 
 
 
@@ -28,9 +31,15 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 @NgModule({
   declarations: [
     // angular does not scan all folders for components - instead we need to register them:
-    // here we declare the app componenta
+    // here we declare the app component
     // now we can use the 'app-root' selector in other angular components, but not yet in the index.html
-    AppComponent, ReportCreateComponent, HeaderComponent, BasicReportCreateComponent, ReportListComponent
+    AppComponent,
+    ReportCreateComponent,
+    HeaderComponent,
+    BasicReportCreateComponent,
+    ReportListComponent,
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     // BrowserModule contains some core features of angular
@@ -48,7 +57,7 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     MatProgressSpinnerModule,
     MatPaginatorModule
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   // here we add the app component to the bootstrap array too so we can use it in index.html
   // there is typically only one component in the bootstrap array, which is the "root" component
   // all other components would be somehow nested in the root component
