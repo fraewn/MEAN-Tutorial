@@ -8,12 +8,13 @@ module.exports = (req, res, next) => {
     // and access the second half by accessing the second element in the array via [1]
     // evtl. mal mit 0 probieren - iwie scheint es das element bei index 1 nicht zu geben
     const token = req.headers.authorization.split(" ")[1];
-    jwt.verify(token, auth.user.secret);
+    const decodedToken = jwt.verify(token, auth.user.secret);
+    req.userData = { email: decodedToken.email, userId: decodedToken.userId };
     next();
   }
   catch(err){
     res.status(401).json({
-      message: "Auth failed"
+      message: "You are not authenticated!"
     });
     console.log(err);
   }

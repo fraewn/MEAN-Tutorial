@@ -6,5 +6,6 @@ export interface Report {
   reporterId: string,
   rating: number,
   date: Date,
-  comment: string
+  comment: string,
+  creator: string
 }

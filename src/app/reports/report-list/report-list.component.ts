@@ -14,7 +14,10 @@ export class ReportListComponent implements OnInit, OnDestroy{
   reportService: ReportService;
   private authStatusSub: Subscription;
   isAuthenticated = false;
-  constructor(reportService: ReportService, private authService : AuthService) {
+  userId: string;
+  constructor(
+    reportService: ReportService,
+    private authService : AuthService) {
     this.reportService = reportService;
   }
 
@@ -36,6 +39,7 @@ export class ReportListComponent implements OnInit, OnDestroy{
     // init tasks
     // fetch all reports
     this.isLoading = true;
+    this.userId = this.authService.getUserId();
     // since this is the init method, we start on page 1 as currentPage
     this.reportService.getReports(this.reportsPerPage, this.currentPage);
 
@@ -70,6 +74,8 @@ export class ReportListComponent implements OnInit, OnDestroy{
     this.isLoading = true;
     this.reportService.deleteReport(reportId).subscribe(() => {
       this.reportService.getReports(this.reportsPerPage, this.currentPage);
+    }, () => {
+      this.isLoading = false;
     });
   }
 

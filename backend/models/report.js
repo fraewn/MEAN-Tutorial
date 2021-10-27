@@ -6,7 +6,8 @@ const reportSchema = mongoose.Schema({
   reporterId: {type: String, default: 'admin'},
   rating: {type: Number, default: 123},
   date: {type: Date, default: new Date()},
-  comment: {type: String, default: 'we are awesome'}
+  comment: {type: String, default: 'we are awesome'},
+  creator: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true}
 });
 
 module.exports = mongoose.model('Report', reportSchema);

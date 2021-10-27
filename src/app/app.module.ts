@@ -21,6 +21,9 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {LoginComponent} from "./auth/login/login.component";
 import {SignupComponent} from "./auth/signup/signup.component";
 import {AuthInterceptor} from "./auth/auth-interceptor";
+import {ErrorInterceptor} from "./error-interceptor";
+import {MatDialogModule} from "@angular/material/dialog";
+import {ErrorComponent} from "./error/error.component";
 
 
 
@@ -39,7 +42,8 @@ import {AuthInterceptor} from "./auth/auth-interceptor";
     BasicReportCreateComponent,
     ReportListComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    ErrorComponent
   ],
   imports: [
     // BrowserModule contains some core features of angular
@@ -55,12 +59,16 @@ import {AuthInterceptor} from "./auth/auth-interceptor";
     MatExpansionModule,
     HttpClientModule,
     MatProgressSpinnerModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDialogModule
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}],
   // here we add the app component to the bootstrap array too so we can use it in index.html
   // there is typically only one component in the bootstrap array, which is the "root" component
   // all other components would be somehow nested in the root component
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  // this component is going to get used, even if angular can't 'see' it
+  entryComponents: [ErrorComponent]
 })
 export class AppModule { }

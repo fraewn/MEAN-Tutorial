@@ -34,7 +34,8 @@ export class ReportService {
               comment: incomingReport.comment,
               date: incomingReport.date,
               reporterId: incomingReport.reporterId,
-              id: incomingReport._id
+              id: incomingReport._id,
+              creator: incomingReport.creator
             };
           }),
           maxReports: reportData.maxReports
@@ -56,7 +57,7 @@ export class ReportService {
   // add a new Report
   addReport(title: string, comment: string, rating: number, companyName: string, reporterId: string, date: Date){
     const report: Report = {id: null, title: title,  comment : comment, rating: rating,
-                              companyName: companyName, reporterId: reporterId, date: date};
+                              companyName: companyName, reporterId: reporterId, date: date, creator:null};
     // post new report to backend
     this.http.post<{message:string, reportId:string}>('http://localhost:3000/api/reports', report)
       .subscribe((response)=> {
@@ -65,7 +66,8 @@ export class ReportService {
   }
 
   getReport(reportId: string){
-    return this.http.get<{ _id: string; title: string; comment: string; companyName: string, date: Date, rating: number, reporterId: string }>(
+    return this.http.get<{ _id: string; title: string; comment: string; companyName: string,
+      date: Date, rating: number, reporterId: string, creator: string }>(
       "http://localhost:3000/api/reports/" + reportId
     );
   }
@@ -80,7 +82,7 @@ export class ReportService {
 
   updateReport(id: string, title: string, comment: string, rating: number, companyName: string, reporterId: string, date: Date){
     const report: Report = {id: id, title: title, rating: rating, comment: comment,
-                                companyName: companyName, date: date, reporterId: reporterId};
+                                companyName: companyName, date: date, reporterId: reporterId, creator: null};
     this.http.put("http://localhost:3000/api/reports/" + id, report)
       .subscribe(response => {
         this.router.navigate(["/"]);

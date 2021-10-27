@@ -7,11 +7,15 @@ const checkAuth = require("../middleware/check-auth");
 const router = express.Router();
 
 // handle incoming post requests
-router.post("", checkAuth, (req, res, next) => {
+router.post(
+  "",
+  checkAuth,
+  (req, res, next) => {
   const report = new Report({
     title: req.body.title,
     rating: req.body.rating,
-    comment: req.body.comment
+    comment: req.body.comment,
+    creator: req.userData.userId
   });
   // write query is automatically created by mongoose using save() function on the mongoose model
   // collection name will be "reports" because the model's name is report
@@ -22,8 +26,12 @@ router.post("", checkAuth, (req, res, next) => {
       // get id for resource that was set by mongodb
       reportId: createdReport._id
     });
+  }).catch(error => {
+    res.status(500).json({
+      message: "Report creation failed! Please try again. "
+    })
   });
-})
+});
 
 router.get("", (req, res, next) => {
   // if you extract the query parameters from req they are always in string format
@@ -54,7 +62,9 @@ router.get("", (req, res, next) => {
       maxReports: count
     });
   }).catch(err => {
-    console.log(err);
+    res.status(500).json({
+      message: "Fetching reports failed."
+    });
   });
 });
 
@@ -63,18 +73,34 @@ router.get("/:id", (req, res, next) => {
     if (report) {
       res.status(200).json(report);
     } else {
-      res.status(404).json({ message: "Post not found!" });
+      res.status(404).json({ message: "Report not found!" });
     }
+  }).catch(err => {
+    res.status(500).json({
+      message: "Failed to fetch the requested report."
+    });
   });
 });
 
 router.delete("/:id", checkAuth, (req, res, next) => {
-  Report.deleteOne({_id: req.params.id}).then(result => {
-    res.status(200).json({message: "Report deleted!"});
-  })
+  Report.deleteOne({_id: req.params.id, creator: req.userData.userId}).then(result => {
+    if(result.deletedCount > 0) {
+      res.status(200).json({message: "Report deleted."});
+    }
+    else {
+      res.status(401).json({message: "Not authorized to delete the report!"});
+    }
+  }).catch(err => {
+    res.status(500).json({
+      message: "Report deletion failed due to an internal error. Please try again later."
+    });
+  });
 });
 
-router.put("/:id", checkAuth, (req, res, next) => {
+router.put(
+  "/:id",
+  checkAuth,
+  (req, res, next) => {
   const report = new Report( {
     _id: req.body.id,
     title: req.body.title,
@@ -82,10 +108,22 @@ router.put("/:id", checkAuth, (req, res, next) => {
     companyName: req.body.companyName,
     reporterId: req.body.reporterId,
     date: req.body.date,
-    comment: req.body.comment
+    comment: req.body.comment,
+    creator: req.userData.userId
   });
-  Report.updateOne({ _id: req.params.id }, report).then(result => {
-    res.status(200).json({ message: "Update successful!" });
+  // the check auth middleware is executed before this method
+  // therefore we have the decoded token containing the userId of the user trying to update a report
+  // now we only update the report, if this userId matches the one of the creator property, which was originally set when the report was created via POST
+  Report.updateOne({ _id: req.params.id, creator: req.userData.userId }, report).then(result => {
+    // in the result we get from the update operation in mongodb, we check the property nModified which indicates how many reports were changed
+    if(result.nModified > 0) {
+      res.status(200).json({message: "Update successful!"});
+    }
+    else {
+      res.status(401).json({message: "Not authorized to update the report!"});
+    }
+  }).catch(error => {
+    res.status(500).json({message: "Couldn't update report due to an internal error. Please try again later. "})
   });
 });
 

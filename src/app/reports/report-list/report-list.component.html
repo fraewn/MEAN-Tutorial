@@ -1,14 +1,14 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 <!-- set multi true so that several expansions can be open at the same time-->
 <mat-accordion multi="true" *ngIf="reports.length>0 && !isLoading">
-  <!-- *ngFor is a directive used to repete an element as often as required-->
+  <!-- *ngFor is a directive used to repeat an element as often as required-->
   <mat-expansion-panel *ngFor="let report of reports">
     <mat-expansion-panel-header>
       {{ report.title }}
     </mat-expansion-panel-header>
     <p>{{ report.rating }}</p>
     <p>{{ report.comment }}</p>
-    <mat-action-row *ngIf="isAuthenticated">
+    <mat-action-row *ngIf="isAuthenticated && userId === report.creator">
       <a mat-button color="accent" [routerLink]="['/edit', report.id]">EDIT</a>
       <button color="warn" mat-button (click)="onDelete(report.id)">DELETE</button>
     </mat-action-row>
