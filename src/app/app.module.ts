@@ -2,30 +2,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import {MatCardModule} from '@angular/material/card';
-import {MatButtonModule} from '@angular/material/button';
-import {MatToolbarModule} from "@angular/material/toolbar";
-import {MatExpansionModule} from "@angular/material/expansion";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-// the .ts is not added in the from part
-import {ReportCreateComponent} from "./reports/report-create/report-create.component";
 import {HeaderComponent} from "./header/header.component";
-import {BasicReportCreateComponent} from "./tutorial/basic-report-create.component";
-import {ReportListComponent} from "./reports/report-list/report-list.component";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {MatPaginatorModule} from "@angular/material/paginator";
 import {LoginComponent} from "./auth/login/login.component";
 import {SignupComponent} from "./auth/signup/signup.component";
 import {AuthInterceptor} from "./auth/auth-interceptor";
 import {ErrorInterceptor} from "./error-interceptor";
-import {MatDialogModule} from "@angular/material/dialog";
 import {ErrorComponent} from "./error/error.component";
-
-
+import {AngularMaterialModule} from "./angular-material.module";
+import {ReportModule} from "./reports/report.module";
 
 // defines the features our angular application has
 // angular thinks in applications and applications are split in modules
@@ -37,10 +24,7 @@ import {ErrorComponent} from "./error/error.component";
     // here we declare the app component
     // now we can use the 'app-root' selector in other angular components, but not yet in the index.html
     AppComponent,
-    ReportCreateComponent,
     HeaderComponent,
-    BasicReportCreateComponent,
-    ReportListComponent,
     LoginComponent,
     SignupComponent,
     ErrorComponent
@@ -49,18 +33,11 @@ import {ErrorComponent} from "./error/error.component";
     // BrowserModule contains some core features of angular
     BrowserModule,
     AppRoutingModule,
-    // this one we need to use ngModule
-    FormsModule,
     BrowserAnimationsModule,
-    MatInputModule,
-    MatCardModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatExpansionModule,
     HttpClientModule,
-    MatProgressSpinnerModule,
-    MatPaginatorModule,
-    MatDialogModule
+    AngularMaterialModule,
+    ReportModule,
+    FormsModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}],
