@@ -1,13 +1,10 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HeaderComponent} from "./header/header.component";
-import {LoginComponent} from "./auth/login/login.component";
-import {SignupComponent} from "./auth/signup/signup.component";
 import {AuthInterceptor} from "./auth/auth-interceptor";
 import {ErrorInterceptor} from "./error-interceptor";
 import {ErrorComponent} from "./error/error.component";
@@ -25,8 +22,6 @@ import {ReportModule} from "./reports/report.module";
     // now we can use the 'app-root' selector in other angular components, but not yet in the index.html
     AppComponent,
     HeaderComponent,
-    LoginComponent,
-    SignupComponent,
     ErrorComponent
   ],
   imports: [
@@ -36,8 +31,7 @@ import {ReportModule} from "./reports/report.module";
     BrowserAnimationsModule,
     HttpClientModule,
     AngularMaterialModule,
-    ReportModule,
-    FormsModule
+    ReportModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}],
