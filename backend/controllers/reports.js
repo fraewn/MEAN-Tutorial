@@ -102,8 +102,8 @@ exports.updateReport =  (req, res, next) => {
     // therefore we have the decoded token containing the userId of the user trying to update a report
     // now we only update the report, if this userId matches the one of the creator property, which was originally set when the report was created via POST
     Report.updateOne({ _id: req.params.id, creator: req.userData.userId }, report).then(result => {
-      // in the result we get from the update operation in mongodb, we check the property nModified which indicates how many reports were changed
-      if(result.nModified > 0) {
+      // in the result we get from the update operation in mongodb, we check the property matchedCount which indicates how many reports could be matched
+      if(result.matchedCount > 0) {
         res.status(200).json({message: "Update successful!"});
       }
       else {
