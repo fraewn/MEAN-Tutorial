@@ -1,0 +1,48 @@
+<!--Two way binding-->
+<!-- here we use ngModel which is a directive = an instruction you place on an html element-->
+<!-- ngModel listens to the user input and emit the data to us and store that data in the text area-->
+<!-- ngModel is not included in core angular package so we need to import it-->
+<!-- we need to bind it to a property-->
+<mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form (submit)="onSaveCompany(companyForm)" #companyForm="ngForm" *ngIf="!isLoading">
+  <mat-form-field>
+    <input
+           matInput
+           type="text"
+           name="companyName"
+           [ngModel]="company?.companyName"
+           required
+           placeholder="Company Name"
+           #companyName="ngModel">
+    <mat-error *ngIf="companyName.invalid">Please enter a the company's name.</mat-error>
+  </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             type="text"
+             name="businessType"
+             [ngModel]="company?.businessType"
+             required
+             placeholder="Business Type"
+             #businessType="ngModel">
+      <mat-error *ngIf="businessType.invalid">Please enter the type of business.</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             type="text"
+             name="principalOfficeLocation"
+             [ngModel]="company?.principalOfficeLocation"
+             required
+             placeholder="Principal Office Location"
+             #principalOfficeLocation="ngModel">
+      <mat-error *ngIf="principalOfficeLocation.invalid">Please enter the location of the company's principal office.</mat-error>
+    </mat-form-field>
+    <mat-action-row>
+      <button mat-raised-button
+              color="primary"
+              type="submit">Save Company</button>
+      <button mat-button
+              color="primary" type="reset">Clear value</button>
+    </mat-action-row>
+  </form>
+</mat-card>
