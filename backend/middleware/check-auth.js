@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
     // evtl. mal mit 0 probieren - iwie scheint es das element bei index 1 nicht zu geben
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, auth.user.secret);
-    req.userData = { email: decodedToken.email, userId: decodedToken.userId };
+    req.userData = { email: decodedToken.email, userId: decodedToken.userId, role: decodedToken.role };
     next();
   }
   catch(err){

@@ -4,6 +4,7 @@ const auth = require('../../auth.json');
 
 const User = require("../models/user");
 
+
 exports.createUser = (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then(hash => {
     const user = new User({
@@ -39,12 +40,13 @@ exports.login = (req, res, next) =>  {
     .then(result => {
       if(!result) {
         return res.status(401).json({
-          message: "Wrong password"
+          message: "Wrong password!"
         });
       }
       const token = jwt.sign({
-        email: fetchedUser.email, userId: fetchedUser._id
-      }, auth.user.secret, {
+        email: fetchedUser.email, userId: fetchedUser._id, role: fetchedUser.role
+      },
+        auth.user.secret, {
         expiresIn: auth.user.params.expirationPeriod
       });
       res.status(200).json({
@@ -55,7 +57,14 @@ exports.login = (req, res, next) =>  {
     })
     .catch(err => {
       return res.status(401).json({
-        message: "Credentials were correct but authentication failed due to an internal server error. Please try again."
+        message: "Credentials were correct but authentication failed due to an internal server error. Please try again later."
       });
     });
 }
+
+
+
+
+
+
+

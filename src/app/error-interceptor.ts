@@ -8,7 +8,6 @@ import {ErrorComponent} from "./error/error.component";
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor{
 
-
   constructor(private dialog: MatDialog) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {

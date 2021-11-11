@@ -1,11 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-// work with Report schema
-const Report = require('./models/report');
 const conf = require('../configuration.json');
 const reportRoutes = require("./routes/report");
 const userRoutes = require("./routes/user");
+const companyRoutes = require('./routes/company')
 // the function returns us an express app
 const app = express();
 
@@ -45,5 +44,6 @@ app.use((req, res, next) => {
 // filter for all request going to /api/reports and use the reportRoutes module for that
 app.use("/api/reports", reportRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/companies", companyRoutes);
 
 module.exports = app;

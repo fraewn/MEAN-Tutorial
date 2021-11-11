@@ -49,3 +49,4 @@ Thumbs.db
 configuration.json
 auth.json
 nodemon.json
+backend/mail

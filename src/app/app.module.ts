@@ -10,6 +10,7 @@ import {ErrorInterceptor} from "./error-interceptor";
 import {ErrorComponent} from "./error/error.component";
 import {AngularMaterialModule} from "./angular-material.module";
 import {ReportModule} from "./reports/report.module";
+import {CompanyModule} from "./companies/company.module";
 
 // defines the features our angular application has
 // angular thinks in applications and applications are split in modules
@@ -31,7 +32,8 @@ import {ReportModule} from "./reports/report.module";
     BrowserAnimationsModule,
     HttpClientModule,
     AngularMaterialModule,
-    ReportModule
+    ReportModule,
+    CompanyModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}],
