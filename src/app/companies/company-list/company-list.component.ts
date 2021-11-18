@@ -4,6 +4,7 @@ import {PageEvent} from "@angular/material/paginator";
 import {AuthService} from "../../auth/auth.service";
 import {CompanyService} from "../company.service";
 import {Company} from "../company.model";
+import {Role} from "../../permission/role";
 
 @Component({
   selector: 'app-company-list',
@@ -49,17 +50,17 @@ export class CompanyListComponent implements OnInit, OnDestroy{
         this.isLoading = false;
         this.totalCompanies = companyData.companyCount;
         this.companies = companyData.companies;
-        console.log(companyData.companies.forEach(company => {
+        companyData.companies.forEach(company => {
           console.log(company.creator);
           console.log(company);
-        }))
+        })
     }, (companies) => {
       console.log("No data could be retrieved from observable");
     });
     this.isAuthenticated = this.authService.getIsAuth();
     console.log(this.isAuthenticated);
-    this.authStatusSub = this.authService.getAuthStatusListener().subscribe(isAuthenticated => {
-      this.isAuthenticated = isAuthenticated;
+    this.authStatusSub = this.authService.getAuthStatusListener().subscribe((authData : {authStatus: boolean, role: Role }) => {
+      this.isAuthenticated = authData.authStatus;
     });
   }
 

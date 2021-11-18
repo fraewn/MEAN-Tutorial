@@ -8,10 +8,12 @@
     </mat-expansion-panel-header>
     <p>{{ company.businessType }}</p>
     <p>{{ company.principalOfficeLocation }}</p>
-    <mat-action-row *ngIf="isAuthenticated && userId === company.creator">
+    <div *appIsGranted="'UPDATE_COMPANY'">
+    <mat-action-row >
       <a mat-button color="accent" [routerLink]="['/company/edit', company.id]">EDIT</a>
       <button color="warn" mat-button (click)="onDelete(company.id)">DELETE</button>
     </mat-action-row>
+    </div>
   </mat-expansion-panel>
 </mat-accordion>
 <mat-paginator

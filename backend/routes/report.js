@@ -2,7 +2,6 @@ const express = require('express');
 // auth middleware to protect the non public routes
 const checkAuth = require("../middleware/check-auth");
 const ReportController = require('../controllers/reports');
-const grantAccess = require("../middleware/grant-access");
 
 const router = express.Router();
 

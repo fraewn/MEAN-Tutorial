@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import {NgForm} from "@angular/forms";
 import {AuthService} from "../auth.service";
+import {PermissionManagerService} from "../../permission/permission-manager.service";
 
 @Component({
   templateUrl: './login.component.html',
@@ -19,11 +20,13 @@ export class LoginComponent implements OnInit, OnDestroy{
    }
    this.isLoading = true;
    this.authService.login(form.value.email, form.value.password);
+   //window.location.replace('/');
+    // location.reload(true);
   }
 
   ngOnInit(): void {
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe(
-      authStatus => {
+      () => {
         this.isLoading = false;
       });
   }

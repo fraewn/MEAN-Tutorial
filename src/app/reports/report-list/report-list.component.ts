@@ -4,6 +4,7 @@ import {ReportService} from "../report.service";
 import {Subscription} from "rxjs";
 import {PageEvent} from "@angular/material/paginator";
 import {AuthService} from "../../auth/auth.service";
+import {Role} from "../../permission/role";
 
 @Component({
   selector: 'app-report-list',
@@ -59,8 +60,8 @@ export class ReportListComponent implements OnInit, OnDestroy{
       console.log("no data could be retrieved from observable");
     });
     this.isAuthenticated = this.authService.getIsAuth();
-    this.authStatusSub = this.authService.getAuthStatusListener().subscribe(isAuthenticated => {
-      this.isAuthenticated = isAuthenticated;
+    this.authStatusSub = this.authService.getAuthStatusListener().subscribe( (authData : {authStatus: boolean, role: Role }) => {
+      this.isAuthenticated = authData.authStatus;
     });
   }
 

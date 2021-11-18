@@ -30,7 +30,7 @@ export class ReportCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe(
-      authStatus => {
+      authData => {
         // if the auth status changes, we will always need to disable the loader (mat-spinner)
       this.isLoading = false;
       console.log(this.isLoading);

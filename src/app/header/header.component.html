@@ -5,11 +5,15 @@
     <span class="spacer"></span>
     <ul>
       <li *ngIf="isAuthenticated">
-        <a mat-button routerLink="/company" routerLinkActive="mat-accent">Edit Companies</a>
+        <a mat-button routerLink="/company" routerLinkActive="mat-accent">Companies</a>
       </li>
+
       <li *ngIf="isAuthenticated">
+        <div *appIsGranted="'UPDATE_COMPANY'">
         <a mat-button routerLink="/company/create" routerLinkActive="mat-accent">New Company</a>
+        </div>
       </li>
+
     <li *ngIf="isAuthenticated">
       <a mat-button routerLink="/report/create" routerLinkActive="mat-accent">New Report</a>
     </li>

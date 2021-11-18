@@ -5,6 +5,7 @@ import {CompanyService} from "../company.service";
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../auth/auth.service";
+import {Role} from "../../permission/role";
 
 @Component({
   selector: 'app-company-create',
