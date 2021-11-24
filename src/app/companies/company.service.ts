@@ -82,6 +82,7 @@ export class CompanyService {
       )
       .subscribe((transformedCompanyData)=> {
         this.companies = transformedCompanyData.companies;
+        console.log(this.companies);
         // js spread operator [...array]
         // creates a new array with [] and makes a copies another array ...array in it
         // otherwise we had only copied the address but not the object (reference type) - in this case we want a real copy

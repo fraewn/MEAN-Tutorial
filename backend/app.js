@@ -1,3 +1,6 @@
+
+const soap = require("soap");
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -47,3 +50,45 @@ app.use("/api/user", userRoutes);
 app.use("/api/companies", companyRoutes);
 
 module.exports = app;
+
+
+// SOAP
+const CompanyController = require("./soap/controller/company");
+function addCompany_function(args){
+  let result = "res: ";
+  result = CompanyController.createReport(args, result)
+  return {
+    result: result
+  }
+}
+
+// the service
+let serviceObject = {
+  CompanyService: {
+    CompanyServiceSoapPort: {
+      Company: addCompany_function
+    },
+    CompanyServiceSoap12Port: {
+      Company: addCompany_function
+    }
+  }
+};
+
+let xml = require('fs').readFileSync('companyService.wsdl', 'utf8');
+
+// root handler
+app.get('/', function (req, res) {
+  res.send('Node Soap Example!<br /><a href="https://github.com/macogala/node-soap-example#readme">Git README</a>');
+})
+
+// Launch the server and listen
+const port = 8000;
+app.listen(port, function () {
+  console.log('Listening on port ' + port);
+  const wsdl_path = "/wsdl";
+  soap.listen(app, wsdl_path, serviceObject, xml);
+  console.log("Check http://localhost:" + port + wsdl_path +"?wsdl to see if the service is working");
+});
+
+
+
