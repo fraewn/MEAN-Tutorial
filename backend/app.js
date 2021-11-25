@@ -1,5 +1,6 @@
 
 const soap = require("soap");
+const CleanReportService = require('./service/cleanReports');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -90,5 +91,6 @@ app.listen(port, function () {
   console.log("Check http://localhost:" + port + wsdl_path +"?wsdl to see if the service is working");
 });
 
+CleanReportService.cleanReportCronJob();
 
 

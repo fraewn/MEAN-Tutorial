@@ -15,7 +15,9 @@ export class ReportService {
   private reports: Report[] = [];
   private reportsUpdated = new Subject<{reports: Report[], reportCount: number}>()
   private BACKEND_URL = environment.backendUrl + "/reports";
+
   constructor(private http: HttpClient, private router: Router) {}
+
   // get all Reports
   getReports(reportsPerPage: number, currentPage: number){
     const queryParams = `?pagesize=${reportsPerPage}&page=${currentPage}`;

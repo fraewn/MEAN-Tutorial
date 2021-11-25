@@ -7,7 +7,7 @@ const reportSchema = mongoose.Schema({
   companyName: {type: String, default: 'The boring company'},
   reporterId: {type: String, default: 'admin'},
   rating: {type: Number, default: 123},
-  date: {type: Date, default: new Date()},
+  date: {type: Date, default: new Date(2012, 11, 24, 10, 33, 30, 0)},
   comment: {type: String, default: 'we are awesome'},
   creator: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true}
 });

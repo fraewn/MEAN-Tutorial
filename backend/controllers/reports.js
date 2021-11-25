@@ -10,6 +10,7 @@ exports.createReport =  (req, res, next) => {
     // write query is automatically created by mongoose using save() function on the mongoose model
     // collection name will be "reports" because the model's name is report
     report.save().then(createdReport => {
+      console.log(createdReport);
       // everything was okay, a resource was created
       res.status(201).json({
         message: "Post added successfully",
@@ -131,4 +132,23 @@ exports.grantAccess = function(action, resource) {
       next(error)
     }
   }
+}
+
+exports.deleteReportBatch = () => {
+  d = new Date();
+  expiresAfter = new Date(d.setDate(d.getDate() - 1825));
+  let result = new Date() + "+++ Cron job was not executed +++";
+  Report.deleteMany({ date : {"$lte" : expiresAfter } }).then(result => {
+    if(result.deletedCount > 0) {
+      result =  result.deletedCount + " Reports deleted in automatic cron job.";
+    }
+    else {
+      result = new Date() + " +++ No older reports than five years! No report got deleted during automatic cron job. +++";
+    }
+    console.log(result);
+  }).catch(err => {
+    console.log(err);
+    result = new Date() + "+++ Batch report deletion during automatic cron job failed due to an internal error. Please try again later. +++";
+    console.log(result);
+  });
 }
