@@ -8,7 +8,7 @@ export class AdminPermissions extends PermissionBase {
       PermissionType.UPDATE_REPORT, PermissionType.DELETE_REPORT,
       PermissionType.CREATE_COMPANY, PermissionType.READ_COMPANY,
       PermissionType.UPDATE_COMPANY, PermissionType.DELETE_COMPANY,
-      PermissionType.OTHER
+      PermissionType.OTHER, PermissionType.READ_FAILURE
     ];
   }
 }

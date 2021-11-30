@@ -11,6 +11,7 @@ import {ErrorComponent} from "./error/error.component";
 import {AngularMaterialModule} from "./angular-material.module";
 import {ReportModule} from "./reports/report.module";
 import {CompanyModule} from "./companies/company.module";
+import {FailureComponent} from "./failure/failure.component";
 
 // defines the features our angular application has
 // angular thinks in applications and applications are split in modules
@@ -23,7 +24,8 @@ import {CompanyModule} from "./companies/company.module";
     // now we can use the 'app-root' selector in other angular components, but not yet in the index.html
     AppComponent,
     HeaderComponent,
-    ErrorComponent
+    ErrorComponent,
+    FailureComponent
   ],
   imports: [
     // BrowserModule contains some core features of angular

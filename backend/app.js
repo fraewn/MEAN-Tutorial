@@ -53,6 +53,55 @@ app.use("/api/companies", companyRoutes);
 module.exports = app;
 
 
+// Web socket
+let WSServer = require('ws').Server;
+let server = require('http').createServer();
+
+// Create web socket server on top of a regular http server
+let wss = new WSServer({
+  server: server
+});
+
+// Also mount the app here
+server.on('request', app);
+
+wss.on('connection', function connection(ws) {
+
+  ws.on('message', function incoming(message) {
+
+    console.log(`received: ${message}`);
+
+    ws.send(JSON.stringify({
+      id: 'ti',
+      title: 'answer',
+      status: 't',
+      type: 't',
+      user_id : 't'
+    }));
+  });
+});
+
+
+server.listen('3001', function() {
+
+  console.log(`http/ws server listening on 3001`);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // SOAP
 const CompanyController = require("./soap/controller/company");
 function addCompany_function(args){

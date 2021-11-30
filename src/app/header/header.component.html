@@ -5,6 +5,12 @@
     <span class="spacer"></span>
     <ul>
       <li *ngIf="isAuthenticated">
+        <div *appIsGranted="'READ_FAILURE'">
+          <a mat-button routerLink="/failure" routerLinkActive="mat-accent">Failure Queue</a>
+        </div>
+      </li>
+
+      <li *ngIf="isAuthenticated">
         <a mat-button routerLink="/company" routerLinkActive="mat-accent">Companies</a>
       </li>
 

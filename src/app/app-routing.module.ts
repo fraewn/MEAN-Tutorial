@@ -5,10 +5,12 @@ import {ReportCreateComponent} from "./reports/report-create/report-create.compo
 import {AuthGuard} from "./auth/auth.guard";
 import {CompanyCreateComponent} from "./companies/company-create/company-create.component";
 import {CompanyListComponent} from "./companies/company-list/company-list.component";
+import {FailureComponent} from "./failure/failure.component";
 
 const routes: Routes = [
   { path: '', component: ReportListComponent },
   { path: 'company', component: CompanyListComponent},
+  { path: 'failure', component: FailureComponent},
   { path: 'report/create', component: ReportCreateComponent, canActivate: [AuthGuard]},
   { path: 'report/edit/:reportId', component: ReportCreateComponent, canActivate: [AuthGuard]},
   { path: 'company/create', component: CompanyCreateComponent, canActivate: [AuthGuard]},
