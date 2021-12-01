@@ -16,7 +16,7 @@ export class FailureService {
 
     this.socket
       .subscribe(
-        (message) => console.log(message),
+        ( message) => console.log(message),
         (err) => console.error(err),
         () => console.warn('Completed!')
       );

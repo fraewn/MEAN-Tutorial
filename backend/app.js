@@ -1,7 +1,5 @@
-
 const soap = require("soap");
 const CleanReportService = require('./service/cleanReports');
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -9,6 +7,8 @@ const conf = require('../configuration.json');
 const reportRoutes = require("./routes/report");
 const userRoutes = require("./routes/user");
 const companyRoutes = require('./routes/company')
+const kafkaProducer = require('./kafka/producer');
+const kafkaConsumer = require('./kafka/consumer');
 // the function returns us an express app
 const app = express();
 
@@ -54,8 +54,8 @@ module.exports = app;
 
 
 // Web socket
-let WSServer = require('ws').Server;
-let server = require('http').createServer();
+const WSServer = require('ws').Server;
+const server = require('http').createServer();
 
 // Create web socket server on top of a regular http server
 let wss = new WSServer({
@@ -66,11 +66,10 @@ let wss = new WSServer({
 server.on('request', app);
 
 wss.on('connection', function connection(ws) {
-
   ws.on('message', function incoming(message) {
 
     console.log(`received: ${message}`);
-
+    kafkaProducer.run(JSON.parse(message)).catch(err => console.log(err));
     ws.send(JSON.stringify({
       id: 'ti',
       title: 'answer',
@@ -81,11 +80,13 @@ wss.on('connection', function connection(ws) {
   });
 });
 
-
 server.listen('3001', function() {
-
   console.log(`http/ws server listening on 3001`);
 });
+
+
+// kafka
+kafkaConsumer.run().catch(err => console.log(err));
 
 
 

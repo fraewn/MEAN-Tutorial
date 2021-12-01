@@ -48,7 +48,6 @@ exports.getAllCompanies = (req, res, next) => {
       companies: fetchedCompanies,
       maxCompanies: count
     });
-    console.log(fetchedCompanies);
   }).catch(err => {
     res.status(500).json({
       message: "Fetching companies failed."
