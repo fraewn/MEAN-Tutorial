@@ -6,6 +6,8 @@ import {AuthGuard} from "./auth/auth.guard";
 import {CompanyCreateComponent} from "./companies/company-create/company-create.component";
 import {CompanyListComponent} from "./companies/company-list/company-list.component";
 import {FailureComponent} from "./failure/failure.component";
+import {RoleGuard} from "./permission/role.guard";
+import {Role} from "./permission/role";
 
 const routes: Routes = [
   { path: '', component: ReportListComponent },
@@ -13,7 +15,7 @@ const routes: Routes = [
   { path: 'failure', component: FailureComponent},
   { path: 'report/create', component: ReportCreateComponent, canActivate: [AuthGuard]},
   { path: 'report/edit/:reportId', component: ReportCreateComponent, canActivate: [AuthGuard]},
-  { path: 'company/create', component: CompanyCreateComponent, canActivate: [AuthGuard]},
+  { path: 'company/create', component: CompanyCreateComponent, canActivate: [AuthGuard, RoleGuard], data : {permissionTypes : ['CREATE_COMPANY']}},
   { path: 'company/edit/:companyId', component: CompanyCreateComponent, canActivate: [AuthGuard]},
   // in load children you can describe the path you want to load lazily
   // old syntax: load Children: './auth/auth.module#AuthModule'
@@ -23,6 +25,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [AuthGuard]
+  providers: [AuthGuard, RoleGuard]
 })
 export class AppRoutingModule { }

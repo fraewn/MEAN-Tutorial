@@ -12,30 +12,7 @@ import {environment} from "../../environments/environment";
 })
 export class FailureComponent implements AfterViewInit {
 
-  //...
-  private websocketurl : string = environment.websocketurl;
-  private socket;
 
-
-  constructor() {
-   this.socket = new WebSocketSubject<{failureMessage : FailureMessage}>(this.websocketurl);
-    //this.socket = WebSocketSubject.create('ws://localhost:8999');
-
-    this.socket
-      .subscribe(
-        (message) => console.log(message),
-        (err) => console.error(err),
-        () => console.warn('Completed!')
-      );
-
-    this.socket.next({
-      id: 'te',
-      title: 'te',
-      status: 'te',
-      type: 'te',
-      user_id: 'te'
-    });
-  }
 
   ngAfterViewInit(): void {
     console.log("failure view was initialized")
