@@ -12,18 +12,33 @@ const kafkaConsumer = require('./kafka/consumer');
 // the function returns us an express app
 const app = express();
 
-// create uri to database from configuration file
-const mongoUri = "mongodb://" + conf.database.username + ":" + conf.database.password
-                              + "@" + conf.host.ip + "/" + conf.database.name
-                              + "?" + conf.database.params;
+// single mongo instance
+const single = "mongodb://"
+                + conf.database_single.username + ":" + conf.database_single.password + "@"
+                + conf.host_single.ip + ":" + conf.host_single.port + ","
+                + "/" + conf.database_single.name
+                + "?" + conf.database_single.params;
+
+// replica set mongo instance
+const replicaSet = "mongodb://"
+                + conf.database_replicaset.username + ":" + conf.database_replicaset.password + "@"
+                + conf.host_replicaset.ip + ":" + conf.host_replicaset.port1 + ","
+                + conf.host_replicaset.ip + ":" + conf.host_replicaset.port2 + ","
+                + conf.host_replicaset.ip + ":" + conf.host_replicaset.port3
+                + "/" + conf.database_replicaset.name
+                + "?" + conf.database_replicaset.params;
 
 // connect to database
-mongoose.connect(mongoUri).then(() => {
-  console.log("connecting to database was successfull")
-})
+mongoose.connect(replicaSet, {
+  serverSelectionTimeoutMS: 5000,
+  useNewUrlParser : true,
+  replicaSet      : 'rs0'
+  }).then(() => {
+  console.log("Connecting to " + replicaSet + " was successful!")
+  })
   .catch((e) => {
-    console.log("connection failed due to:");
-    console.log(e.toString());
+    console.log("Connecting to " + replicaSet + " failed due to:");
+    console.log(e.reason);
   });
 
 // helps us with parsing incoming data

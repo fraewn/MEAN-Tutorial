@@ -1,6 +1,5 @@
 const { Kafka } = require('kafkajs')
 const conf = require('../../configuration.json');
-const websocket = require('../websocket/websocket');
 
 exports.run = async () => {
   const kafka = new Kafka({
