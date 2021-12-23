@@ -1,31 +1,24 @@
-const { Kafka } = require('kafkajs')
 const conf = require('../../configuration.json');
+let failureMessages = [];
 
-exports.run = async () => {
-  const kafka = new Kafka({
-    clientId: 'my-consumer',
-    brokers: [conf.kafka.kafkaHost]
-  })
+exports.run = (kafka, consumer, callback) => {
+  console.log("0  " + failureMessages.length);
 
-  const consumer = kafka.consumer({groupId: 'consumer-group'});
-
-  // Consuming
-  await consumer.connect()
-  await consumer.subscribe({ topic: conf.kafka.topic, fromBeginning: true })
-
-  await consumer.run({
-    eachMessage: async ({ topic, partition, message }) => {
+  consumer.run({
+    eachMessage: ({topic, partition, message}) => {
       console.log({
         partition,
         offset: message.offset,
         value: message.value.toString(),
       });
-      // access the message with JSONparse()
-      // send back to frontend
+      const obj = {
+        part: partition,
+        off: message.offset,
+        val: JSON.parse(message.value.toString())
+      }
+      callback(obj);
     }
-  })
-
-
+  });
 }
 
 

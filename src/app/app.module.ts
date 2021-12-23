@@ -12,6 +12,7 @@ import {AngularMaterialModule} from "./angular-material.module";
 import {ReportModule} from "./reports/report.module";
 import {CompanyModule} from "./companies/company.module";
 import {FailureComponent} from "./failure/failure.component";
+import {FormsModule} from "@angular/forms";
 
 // defines the features our angular application has
 // angular thinks in applications and applications are split in modules
@@ -35,7 +36,8 @@ import {FailureComponent} from "./failure/failure.component";
     HttpClientModule,
     AngularMaterialModule,
     ReportModule,
-    CompanyModule
+    CompanyModule,
+    FormsModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}],

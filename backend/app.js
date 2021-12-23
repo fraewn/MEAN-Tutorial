@@ -1,3 +1,5 @@
+
+
 const soap = require("soap");
 const CleanReportService = require('./service/cleanReports');
 const express = require('express');
@@ -66,7 +68,16 @@ app.use("/api/user", userRoutes);
 app.use("/api/companies", companyRoutes);
 
 module.exports = app;
+// Kafka
+const { Kafka } = require('kafkajs')
+const kafka = new Kafka({
+  clientId: 'my-consumer',
+  brokers: [conf.kafka.kafkaHost]
+})
 
+const consumer = kafka.consumer({groupId: 'consumer-group'});
+consumer.connect();
+consumer.subscribe({ topic: conf.kafka.topic, fromBeginning: true });
 
 // Web socket
 const WSServer = require('ws').Server;
@@ -81,27 +92,34 @@ let wss = new WSServer({
 server.on('request', app);
 
 wss.on('connection', function connection(ws) {
-  ws.on('message', function incoming(message) {
-
-    console.log(`received: ${message}`);
+   ws.on('message', function incoming(message) {
+    console.log(`Web Socket: received message: ${message}`);
     kafkaProducer.run(JSON.parse(message)).catch(err => console.log(err));
-    ws.send(JSON.stringify({
-      id: 'ti',
-      title: 'answer',
-      status: 't',
-      type: 't',
-      user_id : 't'
-    }));
+    console.log("Kafka: Message produced");
+    kafkaConsumer.run(kafka, consumer, sending);
   });
+  function sending(obj) {
+    console.log("Web Socket: answer (consumed from Kafka Queue):");
+    console.log(obj.val);
+    ws.send(JSON.stringify({
+      id: obj.val.id,
+      title: obj.val.title,
+      status: obj.val.status,
+      type: obj.val.type,
+      user_id: obj.val.user_id
+    }));
+    consumer.disconnect(); 
+  }
 });
+
+
 
 server.listen('3001', function() {
   console.log(`http/ws server listening on 3001`);
 });
 
 
-// kafka
-kafkaConsumer.run().catch(err => console.log(err));
+
 
 
 

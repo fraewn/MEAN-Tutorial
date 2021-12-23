@@ -1,1 +1,9 @@
 <h1>hey i'm the failure view</h1>
+<mat-expansion-panel [(ngModel)]="failureMessage" ngDefaultControl>
+  <mat-expansion-panel-header>
+    {{ failureMessage.title }}
+  </mat-expansion-panel-header>
+  <p>{{ failureMessage.id }}</p>
+  <p>{{ failureMessage.type }}</p>
+  <p>{{ failureMessage.status }}</p>
+</mat-expansion-panel>
