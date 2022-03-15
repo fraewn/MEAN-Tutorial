@@ -15,7 +15,6 @@ export class PermissionManagerService {
     const permissions = PermissionsFactory.getInstance().permissions;
     for (let perm of permissions) {
       if (perm === permission){
-        console.log(perm + permission);
         return true;
       }
     }

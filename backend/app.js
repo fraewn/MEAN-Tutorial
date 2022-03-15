@@ -108,7 +108,7 @@ wss.on('connection', function connection(ws) {
       type: obj.val.type,
       user_id: obj.val.user_id
     }));
-    consumer.disconnect(); 
+    consumer.disconnect();
   }
 });
 
@@ -158,7 +158,7 @@ let serviceObject = {
   }
 };
 
-let xml = require('fs').readFileSync('companyService.wsdl', 'utf8');
+let xml = require('fs').readFileSync('../companyService.wsdl', 'utf8');
 
 // root handler
 app.get('/', function (req, res) {

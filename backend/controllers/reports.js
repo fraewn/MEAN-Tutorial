@@ -143,12 +143,14 @@ exports.deleteReportBatch = () => {
       result =  result.deletedCount + " Reports deleted in automatic cron job.";
     }
     else {
-      result = new Date() + " +++ No older reports than five years! No report got deleted during automatic cron job. +++";
+      result = new Date() + " +++ No older reports than five years! No report got " +
+        "deleted during automatic cron job. +++";
     }
     console.log(result);
   }).catch(err => {
     console.log(err);
-    result = new Date() + "+++ Batch report deletion during automatic cron job failed due to an internal error. Please try again later. +++";
+    result = new Date() + "+++ Batch report deletion during automatic cron job failed " +
+      "due to an internal error. Please try again later. +++";
     console.log(result);
   });
 }
